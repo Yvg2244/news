@@ -12,24 +12,13 @@ export const LoginForm = () => {
   const [isLogged, setIsLogged] = useState<boolean>(
     localStorage.getItem("UserEmail")?true:false
   );
-  const [useremail, setUserEmail] = useState<string | null>(
-    localStorage.getItem("UserEmail")
-  );
+ 
   const dispatch = useDispatch();
-
-  const handleStorageChange = (e: StorageEvent) => {
-    console.log(e);
-    if (e.key === "UserEmail") {
-      console.log("Local storage changed:", e.key, e.newValue);
-      setUserEmail(e.newValue);
-    }
-  };
-  window.addEventListener("storage", handleStorageChange);
-  useEffect(() => {
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
+useEffect(()=>{
+  const email_temp=localStorage.getItem("UserEmail")?localStorage.getItem("UserEmail"):"";
+  dispatch(updateUserEmail(email_temp))
+})
+  
   const handleSignin = () => {
     signInWithPopup(auth, provider)
       .then((data) => {
@@ -68,7 +57,7 @@ export const LoginForm = () => {
     localStorage.clear();
     dispatch(updateUserEmail(""));
     dispatch(updateUserFav([""]));
-    setUserEmail(null);
+  
     setIsLogged(false)
   };
   return (
