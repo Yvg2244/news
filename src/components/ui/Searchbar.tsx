@@ -1,3 +1,4 @@
+"use client"
 import { updateNewsKeyword } from "@/store/newsSlice";
 import React, { useEffect } from "react";
 import axios from "axios";
