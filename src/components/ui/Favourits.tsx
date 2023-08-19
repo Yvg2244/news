@@ -45,7 +45,7 @@ const Favourits = () => {
         </div>
       </div>
       <div className="w-fit">
-        <Popover className="bg-white">
+        <Popover >
           <PopoverTrigger asChild>
             <Button variant="outline">Add Category</Button>
           </PopoverTrigger>

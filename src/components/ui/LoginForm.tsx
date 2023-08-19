@@ -7,7 +7,7 @@ import { database } from "../../firebase/firebase";
 import { onValue, ref, child, get, set } from "firebase/database";
 import { updateUid, updateUserEmail, updateUserFav } from "@/store/userSlice";
 export const LoginForm = () => {
-  console.log(localStorage.getItem("UserEmail"));
+
   const [isLogged, setIsLogged] = useState<boolean>(
     localStorage.getItem("UserEmail")?true:false
   );
