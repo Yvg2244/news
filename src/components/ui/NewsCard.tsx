@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Link from "next/link";
+import Image from "next/image";
 type Props = {
   author: string;
   title: string;
@@ -36,6 +37,7 @@ const NewsCard = (props: Props) => {
       <div className="w-full flex justify-center">
         <div className="w-[90%] h-[8rem]">
           <img
+          // width={fu}
             className="w-full h-full"
             src={props.urlToImage ? props.urlToImage : ""}
             alt=""
@@ -75,6 +77,7 @@ const NewsCard = (props: Props) => {
                   src={props.urlToImage ? props.urlToImage : ""}
                   alt=""
                 />
+                
               </div>
             </div>
             <DialogHeader>

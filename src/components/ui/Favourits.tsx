@@ -35,9 +35,9 @@ const Favourits = () => {
       <div className="h-8">
         <div className="w-full overflow-none gap-2 py-2 flex justify-start lg:justify-between">
           <span>Your Favourits: </span>
-          {userFav.map((item: any) => {
+          {userFav.map((item: any,index:any) => {
             return (
-              <Badge className="bg-black text-white" variant="outline">
+              <Badge key={index} className="bg-black text-white" variant="outline">
                 {item}
               </Badge>
             );

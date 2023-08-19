@@ -5,24 +5,26 @@ import { signInWithPopup } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { database } from "../../firebase/firebase";
 import { onValue, ref, child, get, set } from "firebase/database";
-import { updateUid, updateUserEmail,updateUserFav } from "@/store/userSlice";
+import { updateUid, updateUserEmail, updateUserFav } from "@/store/userSlice";
 export const LoginForm = () => {
-  console.log(localStorage.getItem("UserEmail"))
+  console.log(localStorage.getItem("UserEmail"));
+  const [isLogged, setIsLogged] = useState<boolean>(
+    localStorage.getItem("UserEmail")?true:false
+  );
   const [useremail, setUserEmail] = useState<string | null>(
     localStorage.getItem("UserEmail")
   );
   const dispatch = useDispatch();
+
+  const handleStorageChange = (e: StorageEvent) => {
+    console.log(e);
+    if (e.key === "UserEmail") {
+      console.log("Local storage changed:", e.key, e.newValue);
+      setUserEmail(e.newValue);
+    }
+  };
+  window.addEventListener("storage", handleStorageChange);
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      console.log(e)
-      if (e.key === "UserEmail") {
-        console.log("Local storage changed:", e.key, e.newValue);
-        setUserEmail(e.newValue);
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
@@ -34,8 +36,9 @@ export const LoginForm = () => {
         auth.onAuthStateChanged((user) => {
           const userRef = ref(database, `users/${data.user.uid}`);
           get(userRef).then((snapshot) => {
+            setIsLogged(true)
             if (snapshot.exists()) {
-              console.log("existing user",snapshot.val())
+              // console.log("existing user",snapshot.val())
               dispatch(updateUserEmail(snapshot.val().email));
               dispatch(updateUserFav(snapshot.val().fav));
               dispatch(updateUid(data.user.uid));
@@ -46,33 +49,36 @@ export const LoginForm = () => {
                 email: data.user.email,
                 fav: ["new"],
               });
-              dispatch(updateUserEmail(data.user.email?data.user.email:""));
-              localStorage.setItem("UserEmail", data.user.email?data.user.email:"");
+              dispatch(updateUserEmail(data.user.email ? data.user.email : ""));
+              localStorage.setItem(
+                "UserEmail",
+                data.user.email ? data.user.email : ""
+              );
               localStorage.setItem("UserFav", "new");
             }
           });
         });
-
       })
       .catch((err) => {
         console.log(err);
       });
   };
   const handleLogout = () => {
-    localStorage.clear()
+    localStorage.clear();
     dispatch(updateUserEmail(""));
     dispatch(updateUserFav([""]));
-    setUserEmail(null)
+    setUserEmail(null);
+    setIsLogged(false)
   };
   return (
     <div className="">
-      {!useremail ? (
+      {!isLogged ? (
         <Button
           onClick={handleSignin}
           className="bg-black text-white"
           variant="outline"
         >
-         Login
+          Login
         </Button>
       ) : (
         <Button

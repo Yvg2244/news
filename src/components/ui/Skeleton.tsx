@@ -12,11 +12,12 @@ import { Button } from "@/components/ui/button";
 const Skeleton = () => {
   const [shimmer, setshimmer] = useState("bg-gray-200")
   let c=0
-  const changeShimmer=()=>{
-    c=c+1
-    c%2==0?setshimmer("bg-gray-100"):setshimmer("bg-gray-200")
-  }
+ 
   useEffect(()=>{
+    const changeShimmer=()=>{
+      c=c+1
+      c%2==0?setshimmer("bg-gray-100"):setshimmer("bg-gray-200")
+    }
     const interval=setInterval(changeShimmer,700)
     return ()=>clearInterval(interval)
   },[])

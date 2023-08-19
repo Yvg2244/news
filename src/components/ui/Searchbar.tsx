@@ -20,7 +20,7 @@ const Searchbar = (props: Props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [URL]);
+  }, [dispatch,URL]);
   return (
     <div>
       <input
