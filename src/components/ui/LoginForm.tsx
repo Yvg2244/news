@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { auth, provider } from "../../firebase/firebase";
 import { signInWithPopup } from "firebase/auth";
@@ -7,13 +7,26 @@ import { database } from "../../firebase/firebase";
 import { onValue, ref, child, get, set } from "firebase/database";
 import { updateUid, updateUserEmail,updateUserFav } from "@/store/userSlice";
 export const LoginForm = () => {
+  console.log(localStorage.getItem("UserEmail"))
+  const [useremail, setUserEmail] = useState<string | null>(
+    localStorage.getItem("UserEmail")
+  );
   const dispatch = useDispatch();
-  const useremail = useSelector((state: any) => state.userReducer.value.email);
-  const userdata = useSelector<Object>((state: any) => {
-    state.userReducer.value.email;
-  });
-  const dbRef = ref(database);
- 
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      console.log(e)
+      if (e.key === "UserEmail") {
+        console.log("Local storage changed:", e.key, e.newValue);
+        setUserEmail(e.newValue);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
   const handleSignin = () => {
     signInWithPopup(auth, provider)
       .then((data) => {
@@ -22,6 +35,7 @@ export const LoginForm = () => {
           const userRef = ref(database, `users/${data.user.uid}`);
           get(userRef).then((snapshot) => {
             if (snapshot.exists()) {
+              console.log("existing user",snapshot.val())
               dispatch(updateUserEmail(snapshot.val().email));
               dispatch(updateUserFav(snapshot.val().fav));
               dispatch(updateUid(data.user.uid));
@@ -48,10 +62,10 @@ export const LoginForm = () => {
     localStorage.clear()
     dispatch(updateUserEmail(""));
     dispatch(updateUserFav([""]));
-
+    setUserEmail(null)
   };
   return (
-    <>
+    <div className="">
       {!useremail ? (
         <Button
           onClick={handleSignin}
@@ -69,6 +83,6 @@ export const LoginForm = () => {
           Logout
         </Button>
       )}
-    </>
+    </div>
   );
 };

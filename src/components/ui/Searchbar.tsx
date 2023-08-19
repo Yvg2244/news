@@ -11,16 +11,16 @@ const Searchbar = (props: Props) => {
   const URL = keyword
     ? `https://newsapi.org/v2/everything?q=${keyword}&apiKey=e9126a4eab5145f89aa66a732237ee59`
     : `https://newsapi.org/v2/top-headlines?country=us&apiKey=e9126a4eab5145f89aa66a732237ee59`;
-  // useEffect(() => {
-  //   axios
-  //     .get(URL)
-  //     .then((res) => {
-  //       dispatch(updateNewsData(res.data.articles));
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, [URL]);
+  useEffect(() => {
+    axios
+      .get(URL)
+      .then((res) => {
+        dispatch(updateNewsData(res.data.articles));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [URL]);
   return (
     <div>
       <input
@@ -30,7 +30,7 @@ const Searchbar = (props: Props) => {
             updateNewsKeyword(e.target.value != "" ? e.target.value : "")
           );
         }}
-        className="max-w-[40rem] border-2 border-gray-400 rounded-md w-[95vw] p-2"
+        className="max-w-[40rem] border-2 border-gray-400 rounded-md w-[90vw] p-2"
         placeholder="Enter keyword to search for..."
       ></input>
     </div>

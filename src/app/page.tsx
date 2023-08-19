@@ -13,7 +13,6 @@ export default function Home() {
       <Favourits/>
       <SearchedHeading />
       <NewsResults />
-      <LoginForm />
     </>
   );
 }

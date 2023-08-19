@@ -8,11 +8,12 @@ type NewsState = {
   a: String;
   newsKeyWord: String,
   useremail:String,
+  currentNews:Object,
   newsData:Array<Object>;
 
 };
 const initialState = {
-  value: { a: "ads",useremail:"", newsKeyWord: "",newsData:[] } as NewsState,
+  value: { a: "ads",useremail:"", newsKeyWord: "",newsData:[],currentNews:{} } as NewsState,
 } as IntialState;
 export const newsSlice = createSlice({
   name: "newsSlice",
@@ -26,9 +27,12 @@ export const newsSlice = createSlice({
      },
     updateNewsData:(state,action:PayloadAction<Array<Object>>)=>{
       state.value={...state.value,newsData:action.payload}
+    },
+    updateCurrentNews:(state,action:PayloadAction<Object>)=>{
+      state.value={...state.value,currentNews:action.payload}
     }
   },
 });
-export const { updateNewsKeyword,updateNewsData,updateUserEmail } = newsSlice.actions;
+export const { updateNewsKeyword,updateNewsData,updateUserEmail,updateCurrentNews } = newsSlice.actions;
 
 export default newsSlice.reducer;

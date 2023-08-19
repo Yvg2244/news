@@ -27,7 +27,7 @@ const NewsResults = (props: Props) => {
           })}
         </div>
       ) : (
-        <div className="flex flex-wrap gap-4 px-8">
+        <div className="flex justify-center flex-wrap gap-4 px-8">
           <Skeleton />
           <Skeleton />
           <Skeleton />

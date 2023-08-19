@@ -10,24 +10,34 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/store/store";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import Link from "next/link";
 type Props = {
   author: string;
   title: string;
   description: string;
   url: string;
-  urlToImage: string|undefined;
+  urlToImage: string | undefined;
   content: string;
 };
 
 const NewsCard = (props: Props) => {
-  const data = useAppSelector((state) => state.newsReducer.value.a);
+
   return (
     <Card className="h-[470px] justify-between flex flex-col w-[25rem] py-4 px-3 ">
       <div className="w-full flex justify-center">
         <div className="w-[90%] h-[8rem]">
           <img
             className="w-full h-full"
-            src={props.urlToImage?props.urlToImage:""}
+            src={props.urlToImage ? props.urlToImage : ""}
             alt=""
           />
         </div>
@@ -35,17 +45,55 @@ const NewsCard = (props: Props) => {
 
       <CardHeader>
         <CardTitle className="text-xl font-semibold">
-         {props.title.length>50?props.title.slice(0,50)+"...":props.title}
+          {props.title.length > 50
+            ? props.title.slice(0, 50) + "..."
+            : props.title}
         </CardTitle>
         <CardDescription>{props.author}</CardDescription>
       </CardHeader>
       <CardContent>
         <p className="h-[4rem] ">
-         {props.description.length>100?props.description.slice(0,100)+"...":props.description}
+          {props.description?.length > 100
+            ? props.description.slice(0, 100) + "..."
+            : props.description}
         </p>
       </CardContent>
       <CardFooter>
-        <Button className="border-2 border-gray-300">Read More</Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              className="border-2 border-gray-300"
+            >
+              Read More
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="w-[90vw] gap-8 max-w-[425px] bg-white">
+            <div className="w-full flex justify-center">
+              <div className="w-[90%] h-[8rem]">
+                <img
+                  className="w-full h-full"
+                  src={props.urlToImage ? props.urlToImage : ""}
+                  alt=""
+                />
+              </div>
+            </div>
+            <DialogHeader>
+              <DialogTitle>{props.title}</DialogTitle>
+              <DialogDescription>{props.description}</DialogDescription>
+            </DialogHeader>
+            <div>{props.content}</div>
+            <DialogFooter>
+              <Button
+                className="bg-black text-white"
+                
+                type="submit"
+              >
+                <Link href={props.url}>Full article</Link>
+                
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </CardFooter>
     </Card>
   );
