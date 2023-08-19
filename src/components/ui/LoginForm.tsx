@@ -9,9 +9,7 @@ import { onValue, ref, child, get, set } from "firebase/database";
 import { updateUid, updateUserEmail, updateUserFav } from "@/store/userSlice";
 export const LoginForm = () => {
 
-  const [isLogged, setIsLogged] = useState<boolean>(
-    localStorage.getItem("UserEmail")?true:false
-  );
+const isEmail=useSelector((state:any)=>state.userReducer.value.email)
  
   const dispatch = useDispatch();
 useEffect(()=>{
@@ -26,7 +24,7 @@ useEffect(()=>{
         auth.onAuthStateChanged((user) => {
           const userRef = ref(database, `users/${data.user.uid}`);
           get(userRef).then((snapshot) => {
-            setIsLogged(true)
+         
             if (snapshot.exists()) {
               // console.log("existing user",snapshot.val())
               dispatch(updateUserEmail(snapshot.val().email));
@@ -58,11 +56,10 @@ useEffect(()=>{
     dispatch(updateUserEmail(""));
     dispatch(updateUserFav([""]));
   
-    setIsLogged(false)
   };
   return (
     <div className="">
-      {!isLogged ? (
+      {!isEmail ? (
         <Button
           onClick={handleSignin}
           className="bg-black text-white"
