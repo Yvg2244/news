@@ -15,7 +15,7 @@ export const LoginForm = () => {
  
   const dispatch = useDispatch();
 useEffect(()=>{
-  const email_temp=localStorage.getItem("UserEmail")?localStorage.getItem("UserEmail"):"";
+  const email_temp=localStorage.getItem("UserEmail")??""
   dispatch(updateUserEmail(email_temp))
 })
   
